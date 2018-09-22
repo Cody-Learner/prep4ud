@@ -1,6 +1,6 @@
 # prep4ud<br>
 
-A bash script for faster pacman updates through eliminating package download time during updates via pre-downloading updates. <br>
+A bash script for faster pacman updates. Pre-downloads updatable packages. <br>
 This script was created to avoid the pitfalls of a "partial upgrade" (see 1) ie: (pacman -Syuw ) (see 2). <br>
 Does NOT perform unattended system update. User still required to manually run updates (pacman -Syu). <br>
 
