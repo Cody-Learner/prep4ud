@@ -1,0 +1,21 @@
+#!/bin/bash
+# run as user
+
+DATE=$(date '+%Y-%m-%d')
+
+	cp -r /var/lib/pacman/ /tmp/prep4ud
+	sudo --preserve-env=USER,HOME pacman -Sy --dbpath /tmp/prep4ud
+	readarray -t updates <<< "$(pacman -Quq --dbpath /tmp/prep4ud)"
+	trap 'rm -rd /tmp/prep4ud' INT TERM EXIT
+
+if	[[ -n "${updates[@]}" ]] || exit
+	then
+	sudo --preserve-env=USER,HOME pacman -Syw --dbpath /tmp/prep4ud --noconfirm "${updates[@]}"
+
+	echo "Updates available:"      > ~/Desktop/prep4ud-"${DATE}"
+	echo                          >> ~/Desktop/prep4ud-"${DATE}"
+	echo "${updates[*]}" | fmt -1 >> ~/Desktop/prep4ud-"${DATE}"
+
+	chown "$USER" ~/Desktop/prep4ud-*
+	rm -rd /tmp/prep4ud
+fi
