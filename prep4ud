@@ -8,7 +8,7 @@ SENDTO=/home/"$UZR"/Desktop/prep4ud-"${DATE}"
 	cp -r /var/lib/pacman/ /tmp/prep4ud
 	sudo pacman -Syy --dbpath /tmp/prep4ud
 	readarray -t updates <<< "$(pacman -Quq --dbpath /tmp/prep4ud)"
-	trap 'sudo rm -rd /tmp/prep4ud' INT TERM EXIT
+	trap 'rm -rd --interactive=never /tmp/prep4ud' INT TERM EXIT
 
 if	[[ -n "${updates[@]}" ]] || exit
 	then
