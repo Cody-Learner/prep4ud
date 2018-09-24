@@ -12,3 +12,5 @@ The script copies pacman databases to /tmp, checks for system update availabilit
 Running pacman -Syu immediately following prep4ud script running would result in eliminating the need to download packages.
 
 Set the script to auto run via cron or a systemd timer prior to your normal update schedule.
+
+Screenshot: https://cody-learner.github.io/prep4ud.html

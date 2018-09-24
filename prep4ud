@@ -1,18 +1,22 @@
 #!/bin/bash
-# run as user
+# run as root or user
 
 DATE=$(date '+%Y-%m-%d')
+UZR=$(awk -F ":" '/1000/ {print $1}' /etc/passwd)
+SENDTO=/home/"$UZR"/Desktop/prep4ud-"${DATE}"
 
 	cp -r /var/lib/pacman/ /tmp/prep4ud
-	sudo pacman -Sy --dbpath /tmp/prep4ud
+	sudo pacman -Syy --dbpath /tmp/prep4ud
 	readarray -t updates <<< "$(pacman -Quq --dbpath /tmp/prep4ud)"
-	trap 'rm -rd /tmp/prep4ud' INT TERM EXIT
+	trap 'sudo rm -rd /tmp/prep4ud' INT TERM EXIT
 
 if	[[ -n "${updates[@]}" ]] || exit
 	then
-	sudo pacman -Syw --dbpath /tmp/prep4ud --noconfirm "${updates[@]}"
+	sudo pacman -Syw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
 
-	echo "Updates available:"      > ~/Desktop/prep4ud-"${DATE}"
-	echo                          >> ~/Desktop/prep4ud-"${DATE}"
-	echo "${updates[*]}" | fmt -1 >> ~/Desktop/prep4ud-"${DATE}"
+	echo "Updates available:"      > "$SENDTO"
+	echo                          >> "$SENDTO"
+	echo "${updates[*]}" | fmt -1 >> "$SENDTO"
+
+	chown "$UZR" "$SENDTO"
 fi
