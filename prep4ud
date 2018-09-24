@@ -12,7 +12,7 @@ SENDTO=/home/"$UZR"/Desktop/prep4ud-"${DATE}"
 
 if	[[ -n "${updates[@]}" ]] || exit
 	then
-	sudo pacman -Syw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
+	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
 
 	echo "Updates available:"      > "$SENDTO"
 	echo                          >> "$SENDTO"
