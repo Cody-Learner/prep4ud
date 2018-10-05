@@ -14,4 +14,6 @@ Running pacman -Syu immediately following prep4ud script running would result in
 Set the script to auto run via cron or a systemd timer prior to your normal update schedule.
 
 Screenshot: https://cody-learner.github.io/prep4ud.html
+
+
 ![doc-holliday-warning130](https://user-images.githubusercontent.com/36802396/46517446-22060d80-c824-11e8-8c2d-9de5d900c938.png)
