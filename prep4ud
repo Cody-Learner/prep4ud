@@ -1,9 +1,19 @@
 #!/bin/bash
 # run as root or user
+# attribute: "Was" variable awk code borrowed from Trilby @ bbs archlinux
 
 DATE=$(date '+%Y-%m-%d')
 UZR=$(awk -F ":" '/1000/ {print $1}' /etc/passwd)
-SENDTO=/home/"$UZR"/Desktop/prep4ud-"${DATE}"
+SENDTO=/home/"$UZR"/Desktop/prep4ud.dir/prep4ud-"${DATE}"
+Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}
+	END {
+   	s = systime() - last;
+   	d = int(s / 86400);
+   	h = int((s - d * 86400) / 3600)
+   	m = int((s - d * 86400 - h * 3600) / 60)
+   	printf "%d days, %d hours, %d minutes ago\n", d, h, m
+	}
+	' /var/log/pacman.log)
 
 	cp -r /var/lib/pacman/ /tmp/prep4ud
 	sudo pacman -Syy --dbpath /tmp/prep4ud
@@ -14,9 +24,14 @@ if	[[ -n "${updates[@]}" ]] || exit
 	then
 	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
 
-	echo "Updates available:"      > "$SENDTO"
-	echo                          >> "$SENDTO"
-	echo "${updates[*]}" | fmt -1 >> "$SENDTO"
+
+
+	echo "Last update  : $Was"                   			> "$SENDTO"
+	echo "Last reboot  :$(uptime -p | awk '{$1=""; print}') ago"	>> "$SENDTO"
+	echo								>> "$SENDTO"
+	echo "Updates available:"     					>> "$SENDTO"
+	echo								>> "$SENDTO"
+	echo "${updates[*]}" | fmt -1	 				>> "$SENDTO"
 
 	chown "$UZR" "$SENDTO"
 fi
