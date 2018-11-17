@@ -12,7 +12,7 @@ Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6
 			d = int(s / 86400);
 			h = int((s - d * 86400) / 3600)
 			m = int((s - d * 86400 - h * 3600) / 60)
-   			printf "Last update was %d days %d hours and %d minutes ago\n", d, h, m
+   			printf "%d days, %d hours, %d minutes ago\n", d, h, m
 		}     ' /var/log/pacman.log)
 #=============================================================================================#
 
