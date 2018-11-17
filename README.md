@@ -15,7 +15,7 @@ The script copies pacman databases to /tmp, checks for system update availabilit
 You MUST transfer downloaded new packages to pacman's cache prior to updating, to be able to install them. <br>
 
 I've updated my shell alias as follows to transfer packages automatically: <br>
-alias Syu=' sudo mv /var/cache/pacman/prep4ud/*pkg* /var/cache/pacman/pkg/ ; sudo pacman --color=always -Syu' <br>
+alias Syu=' sudo mv /var/cache/pacman/prep4ud/\*pkg\* /var/cache/pacman/pkg/ ; sudo pacman --color=always -Syu' <br>
 
 I've also set up prep4ud to auto run daily via cron.
 
