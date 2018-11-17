@@ -29,7 +29,7 @@ if	[[ -z "${updates[*]}" ]] ; then
 	echo "No updates available"		>> "$SENDTO"
 	exit
     else
-	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
+	sudo pacman -Sw --dbpath /tmp/prep4ud --cachedir /var/cache/pacman/prep4ud --noconfirm --needed "${updates[@]}"
 	echo "Last update  : ${Was}"		 > "$SENDTO"
 	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
 	echo					>> "$SENDTO"
