@@ -17,10 +17,10 @@ You MUST transfer downloaded new packages to pacman's cache prior to updating, t
 I've updated my shell alias as follows to transfer packages automatically: <br>
 alias Syu=' sudo mv /var/cache/pacman/prep4ud/\*pkg\* /var/cache/pacman/pkg/ ; sudo pacman --color=always -Syu' <br>
 
-I've also set up prep4ud to auto run daily via cron.
+I've also set up prep4ud to auto run daily via cron. <br>
 
-Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html
-Report prep4ud: https://cody-learner.github.io/prep4ud-report.html
+Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
+Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
 <br>
