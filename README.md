@@ -19,7 +19,7 @@ alias Syu=' sudo mv /var/cache/pacman/prep4ud/\*pkg\* /var/cache/pacman/pkg/ ; s
 
 I've also set up prep4ud to auto run daily via cron. <br>
 
-Screenshot prep4ud: !(https://cody-learner.github.io/prep4ud.html) <br>
+! Screenshot prep4ud: (https://cody-learner.github.io/prep4ud.html) <br>
 Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
