@@ -3,7 +3,7 @@
 # attribute 'Was' variable awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 
 DATE=$(date '+%Y-%m-%d')
-UZR=$(awk -F ":" '/1000/ {print $1}' /etc/passwd)
+UZR=$(getent passwd 1000 | awk -F':' '{print $1}')
 SENDTO=/home/"$UZR"/Desktop/prep4ud.dir/prep4ud-"${DATE}"
 LRB=$(uptime -p | awk '{$1=""; print}')
 #=================================== 'Was' variable =========================================#
@@ -29,7 +29,7 @@ if	[[ -z "${updates[*]}" ]] ; then
 	echo "No updates available"		>> "$SENDTO"
 	exit
     else
-	sudo pacman -Sw --dbpath /tmp/prep4ud --cachedir /var/cache/pacman/prep4ud --noconfirm --needed "${updates[@]}"
+	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
 	echo "Last update  : ${Was}"		 > "$SENDTO"
 	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
 	echo					>> "$SENDTO"
