@@ -18,10 +18,6 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
 <br>
-![doc-holliday-warning130](https://user-images.githubusercontent.com/36802396/46517446-22060d80-c824-11e8-8c2d-9de5d900c938.png)
-<br>
-<br>
-<br>
 
 UPDATE INFO:
 
