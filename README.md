@@ -21,11 +21,11 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 
 UPDATE INFO:
 
+UPDATE Feb 13, 2019:
+Eliminated separate package cache. Updated packages are downloaded to pacman package cache /var/cache/pacman/pkg/.
+Use pacman -Syu to update.
+
 
 UPDATE Nov 16, 2018:
 Added a separate package cache to prevent potential issues between updates. Added "No updates available" capability.
 
-
-UPDATE Feb 13, 2019:
-Eliminated separate package cache. Updated packages are downloaded to pacman package cache /var/cache/pacman/pkg/.
-Use pacman -Syu to update.
