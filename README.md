@@ -18,8 +18,8 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS:<br>
 FOR Oct 29, 2019: <br>
-The functionality of prep4ud has now been added (with nearly same method and code) in the checkupdates script. <br>
-Thank you and shout out to Eli Schwartz for the addition! Checkupdates is available in the pacman-contrib package. <br>
+The functionality of prep4ud has now been added (nearly same method and code) in an official repo package, in the checkupdates script. <br>
+Checkupdates is available in the pacman-contrib package. Shout out to Eli Schwartz for the contribution! <br>
 Notable differences being additional information provided in prep4ud logs <br>
 and checkupdates omits downloading packages listed in /etc/pacman.conf ignore section. <br>
 <br>
