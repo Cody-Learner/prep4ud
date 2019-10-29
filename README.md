@@ -20,7 +20,7 @@ NEWS:<br>
 FOR Oct 29, 2019: <br>
 The functionality of prep4ud has now been added (nearly same method and code) in an official repo package, in the checkupdates script.
 Checkupdates is available in the pacman-contrib package. Shout out to Eli Schwartz for the contribution! <br>
-Notable differences being additional information provided in prep4ud logs <br>
+Notable differences being additional information provided in prep4ud reports <br>
 and checkupdates omits downloading packages listed in ignore section, in /etc/pacman.conf. <br>
 <br>
 <br>
