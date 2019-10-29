@@ -1,4 +1,5 @@
 #!/bin/bash
+# prep4ud 2019-10-29
 # run as root or user
 # attribute 'Was' variable awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 
@@ -35,7 +36,6 @@ if	[[ -z "${updates[*]}" ]] ; then
 	echo "No updates available"		>> "$SENDTO"
 	exit
     else
-# 	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}" 2>> "$SENDTO"
  	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm "${updates[@]}" 2>> "$SENDTO"
 	echo "Last update  : ${Was}"		 > "$SENDTO"
 	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
