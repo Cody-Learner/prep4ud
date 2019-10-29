@@ -2,13 +2,15 @@
 # run as root or user
 # attribute 'Was' variable awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 
-
 DATE=$(date '+%Y-%m-%d')
-UZR=$(getent passwd 1000 | awk -F':' '{print $1}')
-SENDTO=/home/"$UZR"/Desktop/prep4ud.dir/prep4ud-"${DATE}"
+UZR=$(getent passwd 1000 | awk -F':' '{print $1}')							# Set <user>      to send report
+SENDTO=/home/"$UZR"/Desktop/prep4ud.dir/prep4ud-"${DATE}"						# Set <directory> to send report
 LRB=$(uptime -p | awk '{$1=""; print}')
+Count=$(find /home/"${UZR}"/Desktop/prep4ud.dir/* | wc -l)						# Maintain 5 reports in <directory>
 #=================================== 'Was' variable =========================================#
-Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}
+# Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}		# Added:   gsub (/T/, " ") ;    
+													# fix for new pacman date format	
+Was=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}
 	END	{	s = systime() - last;
 			d = int(s / 86400);
 			h = int((s - d * 86400) / 3600)
@@ -17,6 +19,9 @@ Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6
 		}     ' /var/log/pacman.log)
 #=============================================================================================#
 
+if	(($Count>5)); then
+	rm $(find /home/"${UZR}"/Desktop/prep4ud.dir/* | sort | head -n -4 | xargs)			# Maintain 5 reports in <directory>
+fi
 	cp -r /var/lib/pacman/ /tmp/prep4ud
 	sudo pacman -Syy --dbpath /tmp/prep4ud
 	readarray -t updates <<< "$(pacman -Quq --dbpath /tmp/prep4ud)"
@@ -30,7 +35,8 @@ if	[[ -z "${updates[*]}" ]] ; then
 	echo "No updates available"		>> "$SENDTO"
 	exit
     else
-	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}"
+# 	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm --needed "${updates[@]}" 2>> "$SENDTO"
+ 	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm "${updates[@]}" 2>> "$SENDTO"
 	echo "Last update  : ${Was}"		 > "$SENDTO"
 	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
 	echo					>> "$SENDTO"
