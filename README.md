@@ -14,12 +14,24 @@ I've set up prep4ud to auto run daily via cron. <br>
 
 Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
 Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
+<br>
+<br>
+NEWS Oct 29, 2019: <br>
+The functionality of prep4ud has now been added (with nearly exact same code) in the checkupdates script. <br>
+This script is available in the pacman-contrib package. <br>
+<br>
+Notable differences being additional information providedin prep4ud logs <br>
+and checkupdates omits downloading packages listed in /etc/pacman.conf ignore section. <br>
 
 <br>
 <br>
 <br>
 
 UPDATE INFO:
+
+UPDATE Oct 29, 2019:
+Fix for pacman 5.2 change of date format in pacman.log
+
 
 UPDATE Feb 13, 2019:
 Eliminated separate package cache. Updated packages are downloaded to pacman package cache /var/cache/pacman/pkg/.
