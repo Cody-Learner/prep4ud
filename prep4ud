@@ -1,47 +1,67 @@
 #!/bin/bash
-# prep4ud 2019-10-29
-# run as root or user
-# attribute 'Was' variable awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
+# prep4ud 2020-12-02
+# attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
+# shellcheck disable=SC2004,SC2024,SC2129
 
-DATE=$(date '+%Y-%m-%d')
-UZR=$(getent passwd 1000 | awk -F':' '{print $1}')							# Set <user>      to send report
-SENDTO=/home/"$UZR"/Desktop/prep4ud.dir/prep4ud-"${DATE}"						# Set <directory> to send report
-LRB=$(uptime -p | awk '{$1=""; print}')
-Count=$(find /home/"${UZR}"/Desktop/prep4ud.dir/* | wc -l)						# Maintain 5 reports in <directory>
-#=================================== 'Was' variable =========================================#
-# Was=$(awk -F'[][ :-]' ' /upgrade$/ {last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}		# Added:   gsub (/T/, " ") ;    
-													# fix for new pacman date format	
-Was=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")}
+Date=$(date '+%Y-%m-%d')
+Uzr=$(getent passwd 1000 | awk -F':' '{print $1}')								# Set <user>      to send report
+Sendto="/home/${Uzr}/Desktop/prep4ud.dir/prep4ud-${Date}"							# Set <directory> to send report
+Lastrb=$(uptime -p | awk '{$1=""; print}')									# Last reboot
+Count=$(find /home/"${Uzr}"/Desktop/prep4ud.dir/* -maxdepth 0 -type f  | wc -l)					# Count reports in <directory>
+tmpDir=$(mktemp -d)												# Create /tmp/<directory> for files
+tmpDB=$(mktemp -d)												# Create /tmp/<directory> for DB's
+#=============================================================================================#
+Lastud=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")} 	# Last update
 	END	{	s = systime() - last;
 			d = int(s / 86400);
 			h = int((s - d * 86400) / 3600)
 			m = int((s - d * 86400 - h * 3600) / 60)
-   			printf "%d days, %d hours, %d minutes ago\n", d, h, m
+			printf "%d days, %d hours, %d minutes ago\n", d, h, m
 		}     ' /var/log/pacman.log)
 #=============================================================================================#
 
-if	(($Count>5)); then
-	rm $(find /home/"${UZR}"/Desktop/prep4ud.dir/* | sort | head -n -4 | xargs)			# Maintain 5 reports in <directory>
+if	(($Count >= 5)) ; then
+	rm "$(find /home/"${Uzr}"/Desktop/prep4ud.dir/* -maxdepth 0 -type f | sort | head -n -4 | xargs)"	# Maintain 5 reports in <directory>
 fi
-	cp -r /var/lib/pacman/ /tmp/prep4ud
-	sudo pacman -Syy --dbpath /tmp/prep4ud
-	readarray -t updates <<< "$(pacman -Quq --dbpath /tmp/prep4ud)"
-	trap 'rm -rd --interactive=never /tmp/prep4ud' INT TERM EXIT
+	trap 'sudo rm -rd --interactive=never "${tmpDir}" "${tmpDB}"' INT TERM EXIT				# Clean up
+	cp -r /var/lib/pacman/* "${tmpDB}"									# Copy pacman DB to "${tmpDB}"
+	sudo pacman -Syy --dbpath "${tmpDB}" 2> "${Sendto}" 							# Update pacman DB in "${tmpDB}"
 
-if	[[ -z "${updates[*]}" ]] ; then
-	echo "     No updates available"
-	echo
-	echo "Last update  : ${Was}"		 > "$SENDTO"
-	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
-	echo "No updates available"		>> "$SENDTO"
-	exit
+	readarray -t updates < <(pacman -Qu --dbpath "${tmpDB}" |& tee -a 2>"${Sendto}" | tee >(grep '\[*\]' > "${tmpDir}"/ignored) | grep -v '\[*\]' )
+
+if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
+													# Forward any pacman errors to report
+
+	if	! sudo pacman -Spw --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" &> "${tmpDir}"/pacSpw ; then
+		grep -E 'error|breaks|warning' "${tmpDir}"/pacSpw >> "${Sendto}"
+	fi												# Above: Print list, "file:" & "https:" pkgs
+													# If pacman errors, forward errors to report
+
+	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" &> "${tmpDir}"/pacSw ; then
+		grep -E 'error|breaks|warning' "${tmpDir}"/pacSw >> "${Sendto}"
+	fi												# Above: Download updates w/o installing
+													# If pacman errors, forward errors to report
+
+	echo "Prep4ud report : $(date '+%b %d %Y %I:%M %p')"				>> "${Sendto}"		# Everything below here is for
+	echo "Last update    : ${Lastud}"						>> "${Sendto}"		# printing reports and
+	echo "Last reboot    :${Lastrb} ago"						>> "${Sendto}"		# changing report permissions
+	echo										>> "${Sendto}"
+	echo "Updates available:"							>> "${Sendto}"
+	printf "%s\n" "${updates[@]}" | nl | column -t					>> "${Sendto}"
+	echo										>> "${Sendto}"
+	echo "Updates available, not downloaded:"					>> "${Sendto}"
+	awk '{print "--  "$0}' "${tmpDir}"/ignored | column -t				>> "${Sendto}"
+	echo										>> "${Sendto}"
+	echo "Update packages available locally:"					>> "${Sendto}"
+	awk -F '/' '/file:/ {print $8}' "${tmpDir}"/pacSpw |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
+	echo										>> "${Sendto}"
+	echo "Downloaded packages:"							>> "${Sendto}"
+	awk '/downloading/ {print $2}' "${tmpDir}"/pacSw   |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
+	chown "$Uzr" "${Sendto}"
     else
- 	sudo pacman -Sw --dbpath /tmp/prep4ud --noconfirm "${updates[@]}" 2>> "$SENDTO"
-	echo "Last update  : ${Was}"		 > "$SENDTO"
-	echo "Last reboot  :${LRB} ago"		>> "$SENDTO"
-	echo					>> "$SENDTO"
-	echo "Updates available:"		>> "$SENDTO"
-	echo					>> "$SENDTO"
-	echo "${updates[*]}" | fmt -1		>> "$SENDTO"
-	chown "$UZR" "$SENDTO"
+	echo "Last update  : ${Lastud}"		 					>> "${Sendto}"
+	echo "Last reboot  :${Lastrb} ago"						>> "${Sendto}"
+	echo "No updates available  $(date '+%b %d %Y')"				>> "${Sendto}"
+	chown "$Uzr" "${Sendto}"
+	exit
 fi
