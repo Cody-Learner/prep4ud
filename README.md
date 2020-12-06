@@ -16,16 +16,10 @@ Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
 Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
-NEWS:<br>
-FOR Oct 29, 2019: <br>
-The functionality of prep4ud has now been added (nearly same method and code) in an official repo package, in the checkupdates script.
-Checkupdates is available in the pacman-contrib package. Shout out to Eli Schwartz for the contribution! <br>
-Notable differences being additional information provided in prep4ud reports <br>
-and checkupdates omits downloading packages listed in ignore section, in /etc/pacman.conf. <br>
+NEWS/UPDATE INFO::<br>
 <br>
 <br>
-UPDATE INFO: <br>
-UPDATE Dec 05, 2020:
+UPDATE Dec 05, 2020: <br>
 Added date and more detailed transaction info in prep4ud report. <br>
 Refined find command to handle subdir's presence in report directory. <br>
 Switched order of if statement used to send report. <br>
@@ -34,8 +28,16 @@ Switched all uppercase use in var's to Up/lower case. <br>
 Implemented parameter expansion in array usage.<br>
 Eliminate downloading updates for "ignored packages". <br>
 
+
 UPDATE Oct 29, 2019:
 Fix for pacman 5.2 change of date format in pacman.log
+
+
+NEWS FOR Oct 29, 2019: <br>
+The functionality of prep4ud has now been added (nearly same method and code) in an official repo package, in the checkupdates script.
+Checkupdates is available in the pacman-contrib package. Shout out to Eli Schwartz for the contribution! <br>
+Notable differences being additional information provided in prep4ud reports <br>
+and checkupdates omits downloading packages listed in ignore section, in /etc/pacman.conf. <br>
 
 
 UPDATE Feb 13, 2019:
