@@ -14,6 +14,10 @@ I've set up prep4ud to auto run daily via cron. <br>
 
 Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
 Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
+
+
+![prep4ud-report-2020-12-05](https://user-images.githubusercontent.com/36802396/101270091-8ab1e300-372a-11eb-9bec-612a862dd2b4.png)
+
 <br>
 <br>
 NEWS/UPDATE INFO:<br>
