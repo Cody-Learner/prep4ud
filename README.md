@@ -13,7 +13,7 @@ The script copies pacman databases to /tmp, checks for system update availabilit
 I've set up prep4ud to auto run daily via cron. <br>
 
 Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
-Report prep4ud: https://github.com/Cody-Learner/Cody-Learner.github.io/blob/master/prep4ud-report.html <br>
+Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
 NEWS:<br>
