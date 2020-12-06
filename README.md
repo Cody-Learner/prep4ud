@@ -26,13 +26,13 @@ and checkupdates omits downloading packages listed in ignore section, in /etc/pa
 <br>
 UPDATE INFO: <br>
 UPDATE Dec 05, 2020:
-Added date and more detailed transaction info in prep4ud report.
-Refined find command to handle subdir's presence in report directory.
-Switched order of if statement used to send report.
-Implementd mktmp use for directories to simplify cleanup.
-Switched all uppercase use in var's to Up/lower case.
-Implemented parameter expansion in array usage.
-Eliminate downloading updates for "ignored packages".
+Added date and more detailed transaction info in prep4ud report. <br>
+Refined find command to handle subdir's presence in report directory. <br>
+Switched order of if statement used to send report. <br>
+Implemented mktmp use for directories to simplify cleanup. <br>
+Switched all uppercase use in var's to Up/lower case. <br>
+Implemented parameter expansion in array usage.<br>
+Eliminate downloading updates for "ignored packages". <br>
 
 UPDATE Oct 29, 2019:
 Fix for pacman 5.2 change of date format in pacman.log
