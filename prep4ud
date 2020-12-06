@@ -11,8 +11,8 @@ Count=$(find /home/"${Uzr}"/Desktop/prep4ud.dir/* -maxdepth 0 -type f  | wc -l)	
 tmpDir=$(mktemp -d)												# Create /tmp/<directory> for files
 tmpDB=$(mktemp -d)												# Create /tmp/<directory> for DB's
 #=============================================================================================#
-Lastud=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")} 	# Last update
-	END	{	s = systime() - last;
+Lastud=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3 " " $4 " " $5 " " $6 " 00")} 	# Added:   gsub (/T/, " ") ;
+	END	{	s = systime() - last;									# for pacman.log date format change
 			d = int(s / 86400);
 			h = int((s - d * 86400) / 3600)
 			m = int((s - d * 86400 - h * 3600) / 60)
