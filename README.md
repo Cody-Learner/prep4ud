@@ -16,8 +16,7 @@ Screenshot prep4ud: https://cody-learner.github.io/prep4ud.html <br>
 Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 <br>
-NEWS/UPDATE INFO::<br>
-<br>
+NEWS/UPDATE INFO:<br>
 <br>
 UPDATE Dec 05, 2020: <br>
 Added date and more detailed transaction info in prep4ud report. <br>
