@@ -1,5 +1,5 @@
 #!/bin/bash
-# prep4ud 2020-12-02
+# prep4ud 2020-12-07
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
 
@@ -37,7 +37,7 @@ if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
 	fi												# Above: Print list, "file:" & "https:" pkgs
 													# If pacman errors, forward errors to report
 
-	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" &> "${tmpDir}"/pacSw ; then
+	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee /dev/tty &> "${tmpDir}"/pacSw ; then
 		grep -E 'error|breaks|warning' "${tmpDir}"/pacSw >> "${Sendto}"
 	fi												# Above: Download updates w/o installing
 													# If pacman errors, forward errors to report
@@ -52,7 +52,7 @@ if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
 	echo "Updates available, not downloaded:"					>> "${Sendto}"
 	awk '{print "--  "$0}' "${tmpDir}"/ignored | column -t				>> "${Sendto}"
 	echo										>> "${Sendto}"
-	echo "Update packages available locally:"					>> "${Sendto}"
+	echo "Updates available locally:"						>> "${Sendto}"
 	awk -F '/' '/file:/ {print $8}' "${tmpDir}"/pacSpw |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
 	echo										>> "${Sendto}"
 	echo "Downloaded packages:"							>> "${Sendto}"
