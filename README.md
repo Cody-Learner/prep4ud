@@ -20,6 +20,10 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+UPDATE Dec 07, 2020: <br>
+Tee 'pacman -Sw' output to terminal to show whats going on when running manually.
+
+
 UPDATE Dec 05, 2020: <br>
 Added date and more detailed transaction info in prep4ud report. <br>
 Refined find command to handle subdir's presence in report directory. <br>
