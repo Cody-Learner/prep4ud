@@ -1,5 +1,5 @@
 #!/bin/bash
-# prep4ud 2020-12-07
+# prep4ud 2021-02-11
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
 
@@ -33,12 +33,14 @@ if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
 													# Forward any pacman errors to report
 
 	if	! sudo pacman -Spw --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" &> "${tmpDir}"/pacSpw ; then
-		grep -E 'error|breaks|warning' "${tmpDir}"/pacSpw >> "${Sendto}"
+		grep -E 'WARNING:|warning:|error:' "${tmpDir}"/pacSpw >> "${Sendto}"
 	fi												# Above: Print list, "file:" & "https:" pkgs
 													# If pacman errors, forward errors to report
 
-	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee /dev/tty &> "${tmpDir}"/pacSw ; then
-		grep -E 'error|breaks|warning' "${tmpDir}"/pacSw >> "${Sendto}"
+###	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee /dev/tty &> "${tmpDir}"/pacSw ; then
+
+	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee "${tmpDir}"/pacSw ; then
+		grep -E 'WARNING:|warning:|error:' "${tmpDir}"/pacSw >> "${Sendto}"
 	fi												# Above: Download updates w/o installing
 													# If pacman errors, forward errors to report
 

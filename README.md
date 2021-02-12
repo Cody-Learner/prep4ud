@@ -20,6 +20,12 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+UPDATE Feb 11, 2021: <br>
+Line containing 'pacman -Sw redirection to pacSw file': Fixed issue causing error printed to that file. <br>
+Fixed grep pattern matches to eliminate term that was part of a package name, <br>
+and to more accurately reflect desired result printing errors/isues to report. <br>
+
+
 UPDATE Dec 07, 2020: <br>
 Tee 'pacman -Sw' output to terminal to show whats going on when running manually.
 
