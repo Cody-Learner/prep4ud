@@ -1,7 +1,13 @@
 #!/bin/bash
-# prep4ud 2021-02-11
+# prep4ud 2021-06-16
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
+
+## 	TESTING (june 5, 2021) Added ':: Replace'. Search for ':: Replace'
+## 	TESTING (june 11 2021) Added capacity to send temp db sync errors to report.
+##	TESTING (june 11 2021) Added pacman '--color=never' to temp db sync, to remove color codes in report.
+##	FIX	(june 15 2021) Added '$1" "' to:  'awk '/downloading/ {print $1" "$2}' "${tmpDir}"/pacSw'
+##				Fix for format change in pacman 6.0
 
 Date=$(date '+%Y-%m-%d')
 Uzr=$(getent passwd 1000 | awk -F':' '{print $1}')								# Set <user>      to send report
@@ -25,28 +31,30 @@ if	(($Count >= 5)) ; then
 fi
 	trap 'sudo rm -rd --interactive=never "${tmpDir}" "${tmpDB}"' INT TERM EXIT				# Clean up
 	cp -r /var/lib/pacman/* "${tmpDB}"									# Copy pacman DB to "${tmpDB}"
-	sudo pacman -Syy --dbpath "${tmpDB}" 2> "${Sendto}" 							# Update pacman DB in "${tmpDB}"
+	sudo pacman -Syy --color=never --dbpath "${tmpDB}" 2> "${tmpDir}"/pacSyy				# Update pacman DB in "${tmpDB}"
+														# Redirect pacman errors to report
 
 	readarray -t updates < <(pacman -Qu --dbpath "${tmpDB}" |& tee -a 2>"${Sendto}" | tee >(grep '\[*\]' > "${tmpDir}"/ignored) | grep -v '\[*\]' )
 
-if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
-													# Forward any pacman errors to report
+if	[[ -n "${updates[*]}" ]] ; then										# Above: Create updateable pkg array
+														# Redirect pacman errors to report
 
 	if	! sudo pacman -Spw --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" &> "${tmpDir}"/pacSpw ; then
-		grep -E 'WARNING:|warning:|error:' "${tmpDir}"/pacSpw >> "${Sendto}"
-	fi												# Above: Print list, "file:" & "https:" pkgs
-													# If pacman errors, forward errors to report
-
-###	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee /dev/tty &> "${tmpDir}"/pacSw ; then
+		grep -E 'WARNING:|warning:|error:|:: Replace' "${tmpDir}"/pacSpw >> "${Sendto}"
+	fi													# Above:
+														# Print list, "file:" & "https:" pkgs
+														# Send pacman errors to report
 
 	if	! sudo pacman -Sw  --needed --noconfirm --dbpath "${tmpDB}" "${updates[@]%% *}" |& tee "${tmpDir}"/pacSw ; then
-		grep -E 'WARNING:|warning:|error:' "${tmpDir}"/pacSw >> "${Sendto}"
-	fi												# Above: Download updates w/o installing
-													# If pacman errors, forward errors to report
+		grep -E 'WARNING:|warning:|error:|:: Replace' "${tmpDir}"/pacSw >> "${Sendto}"
+	fi													# Above: 
+														# Download updates w/o installing
+														# Send pacman errors to report
 
 	echo "Prep4ud report : $(date '+%b %d %Y %I:%M %p')"				>> "${Sendto}"		# Everything below here is for
 	echo "Last update    : ${Lastud}"						>> "${Sendto}"		# printing reports and
 	echo "Last reboot    :${Lastrb} ago"						>> "${Sendto}"		# changing report permissions
+	grep -E 'WARNING:|warning:|error:|:: Replace' "${tmpDir}"/pacSyy 		>> "${Sendto}"
 	echo										>> "${Sendto}"
 	echo "Updates available:"							>> "${Sendto}"
 	printf "%s\n" "${updates[@]}" | nl | column -t					>> "${Sendto}"
@@ -58,12 +66,13 @@ if	[[ -n "${updates[*]}" ]] ; then									# Above: Create updateable pkg array
 	awk -F '/' '/file:/ {print $8}' "${tmpDir}"/pacSpw |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
 	echo										>> "${Sendto}"
 	echo "Downloaded packages:"							>> "${Sendto}"
-	awk '/downloading/ {print $2}' "${tmpDir}"/pacSw   |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
+	awk '/downloading/ {print $1" "$2}' "${tmpDir}"/pacSw |sort|nl -n'ln' -s' ' -w3	>> "${Sendto}"
 	chown "$Uzr" "${Sendto}"
     else
-	echo "Last update  : ${Lastud}"		 					>> "${Sendto}"
-	echo "Last reboot  :${Lastrb} ago"						>> "${Sendto}"
-	echo "No updates available  $(date '+%b %d %Y')"				>> "${Sendto}"
+	echo "Last update  : ${Lastud}"		 				|& tee -a "${Sendto}"
+	echo "Last reboot  :${Lastrb} ago"					|& tee -a "${Sendto}"
+	grep -E 'WARNING:|warning:|error:|:: Replace' "${tmpDir}"/pacSyy 	|& tee -a "${Sendto}"
+	echo "No updates available  $(date '+%b %d %Y')"			|& tee -a "${Sendto}"
 	chown "$Uzr" "${Sendto}"
 	exit
 fi
