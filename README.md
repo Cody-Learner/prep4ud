@@ -20,6 +20,13 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+UPDATE June 16, 2021: <br>
+Added capacity to send temp db sync errors to report. <br>
+Added pacman '--color=never' to temp db sync operation to remove color codes in report. <br>
+Added '$1" "' to:  'awk '/downloading/ {print $1" "$2}' "${tmpDir}"/pacSw. Now works with pacman 6.0 'downloading packages' format. <br>
+Clean up and carify comments. <br>
+
+
 UPDATE Feb 11, 2021: <br>
 Line containing 'pacman -Sw redirection to pacSw file': Fixed issue causing error printed to that file. <br>
 Fixed grep pattern matches to eliminate term that was part of a package name, <br>
