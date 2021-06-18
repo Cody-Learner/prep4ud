@@ -3,12 +3,6 @@
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
 
-## 	TESTING (june 5, 2021) Added ':: Replace'. Search for ':: Replace'
-## 	TESTING (june 11 2021) Added capacity to send temp db sync errors to report.
-##	TESTING (june 11 2021) Added pacman '--color=never' to temp db sync, to remove color codes in report.
-##	FIX	(june 15 2021) Added '$1" "' to:  'awk '/downloading/ {print $1" "$2}' "${tmpDir}"/pacSw'
-##				Fix for format change in pacman 6.0
-
 Date=$(date '+%Y-%m-%d')
 Uzr=$(getent passwd 1000 | awk -F':' '{print $1}')								# Set <user>      to send report
 Sendto="/home/${Uzr}/Desktop/prep4ud.dir/prep4ud-${Date}"							# Set <directory> to send report
