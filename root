@@ -1,0 +1,22 @@
+# File: /var/spool/cron/root
+# cron + cronie
+#
+#  To setup a cron job, run # crontab -e
+#  See: /var/spool/cron/root  for file.
+#
+# Example:
+#
+#   * = Wildcard, specifies every possible time interval 
+#
+#   min hour daymonth month dayofweek command
+#
+
+# RUN AT 08:00 AM WEDNESDAY  /home/jeff/bin/jeffsbackup-2-sata-M2
+
+00 08 * * 3 /home/jeff/bin/jeffsbackup-2-sata-M2
+
+
+# RUN 10:00 AM DAILY /home/jeff/bin/prep4ud
+
+00 10 * * * /home/jeff/bin/prep4ud
+
