@@ -20,6 +20,14 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+
+UPDATE July 26, 2024: <br>
+prep4ud: <br>
+Added 'Destdir' variable. <br>
+Added check/create Destdir if missing. <br>
+Redirected 'stderr' to /dev/null for 'find' command in setting 'Count' variable. <br>
+
+
 UPDATE June 16, 2021: <br>
 Added capacity to send temp db sync errors to report. <br>
 Added pacman '--color=never' to temp db sync operation to remove color codes in report. <br>
