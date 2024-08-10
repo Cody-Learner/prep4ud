@@ -1,4 +1,6 @@
 #!/bin/bash
+# prep4ud.inst 2024-08-10
+# Checks for/installs cronie, creates root crontab to run prep4ud every day at 10:00am.
 
 
 if	! type crontab ; then
