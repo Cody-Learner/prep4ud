@@ -13,7 +13,8 @@ fi
 	printf '%s\n' " 00 10 * * * $(type -p prep4ud)"          | sudo tee -a /var/spool/cron/root
 
 	printf '\f%s\f\n' " Running 'sudo crontab -l' to display /var/spool/cron/root"
-
 	sudo crontab -l
 
-	echo
+	printf '\f%s\f\n' " Starting/enabling/displaying systemd cronie.service."
+	sudo systemctl enable --now cronie.service
+	systemctl status cronie.service
