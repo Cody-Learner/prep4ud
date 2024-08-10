@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+if	! type crontab ; then
+	printf '\f%s\f\n' " cronie not installed. Installing now..."
+	sudo pacman --color=always -S cronie
+fi
+	printf '\f%s\f\n' " Appending crontab file with."
+
+	printf '%s\n' " # RUN 10:00 AM DAILY $(type -p prep4ud)" | sudo tee -a /var/spool/cron/root
+	printf '%s\n' " 00 10 * * * $(type -p prep4ud)"          | sudo tee -a /var/spool/cron/root
+
+	printf '\f%s\f\n' " Running 'sudo crontab -l' to display /var/spool/cron/root"
+
+	sudo crontab -l
+
+	echo
