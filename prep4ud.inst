@@ -1,20 +1,22 @@
 #!/bin/bash
-# prep4ud.inst 2024-08-10
+# prep4ud.inst 2024-08-30
 # Checks for/installs cronie, creates root crontab to run prep4ud every day at 10:00am.
 
+B=$(tput bold)
+O=$(tput sgr0)
 
-if	! type crontab ; then
-	printf '\f%s\f\n' " cronie not installed. Installing now..."
+if	! type crontab &>/dev/null ; then
+	printf '\n%s\n\n' "${B} Prep4ud config script -- cronie is needed and not installed.${O}"
 	sudo pacman --color=always -S cronie
 fi
-	printf '\f%s\f\n' " Appending crontab file with."
+	printf '\n%s\n\n' " Appending crontab file with."
 
 	printf '%s\n' " # RUN 10:00 AM DAILY $(type -p prep4ud)" | sudo tee -a /var/spool/cron/root
 	printf '%s\n' " 00 10 * * * $(type -p prep4ud)"          | sudo tee -a /var/spool/cron/root
 
-	printf '\f%s\f\n' " Running 'sudo crontab -l' to display /var/spool/cron/root"
+	printf '\n%s\n\n' " Running 'sudo crontab -l' to display /var/spool/cron/root"
 	sudo crontab -l
 
-	printf '\f%s\f\n' " Starting/enabling/displaying systemd cronie.service."
+	printf '\n%s\n\n' " Starting/enabling/displaying systemd cronie.service."
 	sudo systemctl enable --now cronie.service
 	systemctl status cronie.service
