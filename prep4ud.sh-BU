@@ -1,10 +1,10 @@
 #!/bin/bash
-# prep4ud 2024-09-28
+# prep4ud 2024-07-26
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
 
 Date=$(date '+%Y-%m-%d')
-Uzr=$(getent passwd "${UID}" | awk -F':' '{print $1}')								# Set <user>      to send report
+Uzr=$(getent passwd 1000 | awk -F':' '{print $1}')								# Set <user>      to send report
 Destdir="/home/${Uzr}/Desktop/prep4ud.dir"									# Set Destdir <directory>
 Sendto="/home/${Uzr}/Desktop/prep4ud.dir/prep4ud-${Date}"							# Set <file> to send report
 Lastrb=$(uptime -p | awk '{$1=""; print}')									# Last reboot
@@ -21,10 +21,7 @@ Lastud=$(awk -F'[][ :-]' ' /upgrade$/ {gsub (/T/, " ") ; last = mktime($2 " " $3
 		}     ' /var/log/pacman.log)
 #=============================================================================================#
 
-	sudo chmod +x "${tmpDir}"
-	sudo chmod +x "${tmpDB}"
-
-	[[ ! -d ${Destdir} ]] && mkdir -p "${Destdir}"								# Check/create Destdir
+	[[ ! -d ${Destdir} ]] && mkdir -p ${Destdir}								# Check/create Destdir
 
 if	(($Count >= 5)) ; then
 	rm "$(find /home/"${Uzr}"/Desktop/prep4ud.dir/* -maxdepth 0 -type f | sort | head -n -4 | xargs)"	# Maintain 5 reports in <directory>
