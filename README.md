@@ -20,6 +20,12 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+UPDATE Sep 28, 2024: <br>
+prep4ud: <br>
+Added '+x' to temp dirs to work with changes in pacman 7.0. <br>
+Added a set of missing double quotes to appease shellcheck. <br>
+Use $UID in place of hardcoded user 1000 for Uzr variable.  <br>
+
 
 UPDATE July 26, 2024: <br>
 prep4ud: <br>
