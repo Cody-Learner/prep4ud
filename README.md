@@ -20,6 +20,10 @@ Report prep4ud: https://cody-learner.github.io/prep4ud-report.html <br>
 <br>
 NEWS/UPDATE INFO:<br>
 <br>
+UPDATE Oct 07, 2024: <br>
+Reverted change to Uzr variable.  <br>
+
+
 UPDATE Sep 28, 2024: <br>
 prep4ud: <br>
 Added '+x' to temp dirs to work with changes in pacman 7.0. <br>
