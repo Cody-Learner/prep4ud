@@ -1,10 +1,10 @@
 #!/bin/bash
-# prep4ud 2024-09-28
+# prep4ud 2024-10-07
 # attribute Lastud awk code:  Trilby https://bbs.archlinux.org/viewtopic.php?pid=1775384#p1775384
 # shellcheck disable=SC2004,SC2024,SC2129
 
 Date=$(date '+%Y-%m-%d')
-Uzr=$(getent passwd "${UID}" | awk -F':' '{print $1}')								# Set <user>      to send report
+Uzr=$(getent passwd 1000 | awk -F':' '{print $1}')								# Set <user>      to send report
 Destdir="/home/${Uzr}/Desktop/prep4ud.dir"									# Set Destdir <directory>
 Sendto="/home/${Uzr}/Desktop/prep4ud.dir/prep4ud-${Date}"							# Set <file> to send report
 Lastrb=$(uptime -p | awk '{$1=""; print}')									# Last reboot
